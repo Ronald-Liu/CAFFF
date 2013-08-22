@@ -7,10 +7,10 @@ def main(aType, interval):
 	display.load(world.vision())
 	while True:
 		world.iterate()
-		if logic.status() == logic.DEAD:
+		if world.status() == logic.DEAD:
 			print 'Your world is dead'
 			return
-		display.refresh(world, logic.status())
+		display.refresh(world.vision(), world.status())
 		time.sleep(interval)
 
 if __name__=="__main__":
