@@ -1,17 +1,22 @@
 import display
 import logic
 import time
-world = None
+from PyQt4 import QtGui
+
 def main(aType, interval):
 	world = logic.loadWorld(aType)
-	display.load(iterateStep)
+	app = QtGui.QApplication(sys.argv)
+	widget = display.displayPanel(aType, iterateStep, interval)
+	widget.show()
 
-def iterateStep():
+	sys.exit(app.exec_())
+
+def iterateStep(obj):
 	world.iterate()
 	if world.status() == logic.DEAD:
 		print 'Your world is dead'
 		return
-	display.refresh(world.vision(), world.status())
+	obj.refresh(world.vision(), world.status())
 
 if __name__=="__main__":
 	main('a', 1)
