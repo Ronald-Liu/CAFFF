@@ -1,8 +1,16 @@
+def getX(x):
+	return x[0]
+def getY(x):
+	return x[1]
 class gameOfLife(object):
 	'''
 	'''
 	def load(self, argv):
 		self.cellSet = set(argv)
+		self.status = 'RUNNING'
+		
+		self.mapRange = (min(self.cellSet, key=getX)[0],max(self.cellSet, key=getX)[0],
+			min(self.cellSet, key=getY)[1],max(self.cellSet, key=getY)[1])
 	def iterate(self):
 		candidList = {}
 		
@@ -23,9 +31,12 @@ class gameOfLife(object):
 			else:
 				cellSetReset.add(k)
 		self.cellSet = ((self.cellSet & cellSetKeep) | cellSetSet) - cellSetReset
+		self.mapRange = (min(self.cellSet, key=getX)[0],max(self.cellSet, key=getX)[0],
+			min(self.cellSet, key=getY)[1],max(self.cellSet, key=getY)[1])
 
-	def status(self):
-		return self.cellSet
+	def vision(self):
+		return (self.mapRange, self.cellSet)
+
 	def Neighbourhood_8(self, point):
 		n8 = [(1,0),(-1,0),(0,1),(0,-1),(1,1),(1,-1),(-1,1),(-1,-1)]
 		for i in n8:
@@ -33,7 +44,9 @@ class gameOfLife(object):
 		raise StopIteration() 
 
 def loadWorld(path):
-	return 
+	w = gameOfLife()
+	w.load([(0,1),(1,2),(2,0),(2,1),(2,2)])
+	return w
 
 def testMain():
 	world = gameOfLife()
